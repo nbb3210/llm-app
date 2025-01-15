@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom/client';
 const App: React.FC = () => {
   return (
     <div style={{ textAlign: 'center', marginTop: '50px' }}>
-      <h1>Hello, Electron + React + Vite!123</h1>
+      <h1>Hello, Electron + React + Vite!456</h1>
       <p>This is a basic example of a React app running in Electron.</p>
     </div>
   );
