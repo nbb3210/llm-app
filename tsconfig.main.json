@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+      "target": "ESNext",
+      "module": "CommonJS",
+      "strict": true,
+      "outDir": "dist/main", // 输出到 dist/main
+      "esModuleInterop": true,
+      "skipLibCheck": true
+    },
+    "include": ["src/main/**/*"],
+    "exclude": ["node_modules"]
+  }
