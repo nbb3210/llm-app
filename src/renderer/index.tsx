@@ -1,78 +1,58 @@
-import React from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import './index.css'
 import ReactDOM from 'react-dom/client';
-import Placeholder from '@tiptap/extension-placeholder'
-import { EditorContent, useEditor } from '@tiptap/react'
-import StarterKit from '@tiptap/starter-kit'
-import Details from '@tiptap-pro/extension-details'
-import DetailsContent from '@tiptap-pro/extension-details-content'
-import DetailsSummary from '@tiptap-pro/extension-details-summary'
+import { createPortal } from 'react-dom'
+import { Surface } from '@/components/ui/Surface'
+import { Toolbar } from '@/components/ui/Toolbar'
 import { BlockEditor } from '@/components/BlockEditor'
+import { Icon } from '@/components/ui/Icon'
 
+const useDarkmode = () => {
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(
+    typeof window !== 'undefined' ? window.matchMedia('(prefers-color-scheme: dark)').matches : false,
+  )
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
+    const handleChange = () => setIsDarkMode(mediaQuery.matches)
+    mediaQuery.addEventListener('change', handleChange)
+    return () => mediaQuery.removeEventListener('change', handleChange)
+  }, [])
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', isDarkMode)
+  }, [isDarkMode])
+
+  const toggleDarkMode = useCallback(() => setIsDarkMode(isDark => !isDark), [])
+  const lightMode = useCallback(() => setIsDarkMode(false), [])
+  const darkMode = useCallback(() => setIsDarkMode(true), [])
+
+  return {
+    isDarkMode,
+    toggleDarkMode,
+    lightMode,
+    darkMode,
+  }
+}
 // 主组件
 const App: React.FC = () => {
-  const editor = useEditor({
-    extensions: [
-      StarterKit,
-      Details.configure({
-        persist: true,
-        HTMLAttributes: {
-          class: 'details',
-        },
-      }),
-      DetailsSummary,
-      DetailsContent,
-      Placeholder.configure({
-        includeChildren: true,
-        placeholder: ({ node }) => {
-          if (node.type.name === 'detailsSummary') {
-            return 'Summary'
-          }
-
-          return ''
-        },
-      }),
-    ],
-    content: `
-      <p>Look at these details</p>
-      <details>
-        <summary>This is a summary</summary>
-        <p>Surprise!</p>
-      </details>
-      <p>Nested details are also supported</p>
-      <details open>
-        <summary>This is another summary</summary>
-        <p>And there is even more.</p>
-        <details>
-          <summary>We need to go deeper</summary>
-          <p>Booya!</p>
-        </details>
-      </details>
-    `,
-  })
-
-  if (!editor) {
-    return null
-  }
+  const { isDarkMode, darkMode, lightMode } = useDarkmode()
+  
+  const DarkModeSwitcher = createPortal(
+    <Surface className="flex items-center gap-1 fixed bottom-6 right-6 z-[99999] p-1">
+      <Toolbar.Button onClick={lightMode} active={!isDarkMode}>
+        <Icon name="Sun" />
+      </Toolbar.Button>
+      <Toolbar.Button onClick={darkMode} active={isDarkMode}>
+        <Icon name="Moon" />
+      </Toolbar.Button>
+    </Surface>,
+    document.body,
+  )
 
   return (
     <>
-      <div className="control-group">
-        <div className="button-group">
-          <button onClick={() => editor.chain().focus().setDetails().run()} disabled={!editor.can().setDetails()}>
-            Set details
-          </button>
-          <button onClick={() => editor.chain().focus().unsetDetails().run()} disabled={!editor.can().unsetDetails()}>
-            Unset details
-          </button>
-          <button onClick={() => editor.chain().focus().command(({ tr }) => {
-            tr.setNodeAttribute(23, 'open', true)
-            return true
-          }).run()}>
-            Force open first details
-          </button>
-        </div>
-      </div>
+     {DarkModeSwitcher}
       {/* <EditorContent editor={editor} /> */}
       <BlockEditor />
     </>
