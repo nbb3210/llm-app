@@ -2,8 +2,8 @@
   "name": "llm-app",
   "private": true,
   "version": "0.0.0",
-  "type": "commonjs",
-  "main": "src/main/main.js",
+  "type": "module",
+  "main": "./dist/main/main.js",
   "scripts": {
     "dev": "concurrently \"pnpm vite\" \"pnpm electron:dev\"",
     "electron:dev": "nodemon",
@@ -13,12 +13,22 @@
     "electron:build": "electron-builder"
   },
   "dependencies": {
+    "@tailwindcss/vite": "^4.0.0",
+    "@tiptap-pro/extension-details": "^2.17.2",
+    "@tiptap-pro/extension-details-content": "^2.17.2",
+    "@tiptap-pro/extension-details-summary": "^2.17.2",
+    "@tiptap/extension-placeholder": "^2.11.2",
+    "@tiptap/react": "^2.11.2",
+    "@tiptap/starter-kit": "^2.11.2",
     "electron": "^34.0.0",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "tailwindcss": "^4.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",
+    "@types/electron": "^1.6.12",
+    "@types/node": "^22.10.8",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
     "@vitejs/plugin-react": "^4.3.4",

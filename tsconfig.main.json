@@ -1,12 +1,15 @@
 {
-    "compilerOptions": {
-      "target": "ESNext",
-      "module": "CommonJS",
-      "strict": true,
-      "outDir": "dist/main", // 输出到 dist/main
-      "esModuleInterop": true,
-      "skipLibCheck": true
-    },
-    "include": ["src/main/**/*"],
-    "exclude": ["node_modules"]
-  }
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "strict": true,
+    "outDir": "dist/main",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "lib": ["ESNext", "DOM"], // 添加 DOM 支持
+    "moduleResolution": "Node", // 确保 Node 模块解析
+    "types": ["node"]           // 引入 Node.js 类型
+  },
+  "include": ["src/main/**/*"],
+  "exclude": ["node_modules"]
+}
