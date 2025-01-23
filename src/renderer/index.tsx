@@ -7,6 +7,7 @@ import StarterKit from '@tiptap/starter-kit'
 import Details from '@tiptap-pro/extension-details'
 import DetailsContent from '@tiptap-pro/extension-details-content'
 import DetailsSummary from '@tiptap-pro/extension-details-summary'
+import { BlockEditor } from '@/components/BlockEditor'
 
 // 主组件
 const App: React.FC = () => {
@@ -72,7 +73,8 @@ const App: React.FC = () => {
           </button>
         </div>
       </div>
-      <EditorContent editor={editor} />
+      {/* <EditorContent editor={editor} /> */}
+      <BlockEditor />
     </>
   )
 };
